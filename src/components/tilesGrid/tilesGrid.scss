@@ -1,0 +1,10 @@
+.tiles__grid {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  transition: transform .5s;
+  // transform-style: preserve-3d;
+}

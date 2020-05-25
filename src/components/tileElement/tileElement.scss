@@ -1,0 +1,40 @@
+.tiles__element {
+  border-radius: .5rem;
+  cursor: pointer;
+  display: block;
+  margin: 1rem;
+  transition: .3s;
+  height: 10rem;
+  width: 10rem;
+
+  &.hide {
+    background-color: #555;
+  }
+  &-red {
+    background-color: red;
+  }
+  &-blue {
+    background-color: blue;
+  }
+  &-green {
+    background-color: green;
+  }
+  &-violet {
+    background-color: violet;
+  }
+  &-orangered {
+    background-color: orangered;
+  }
+  &-pink {
+    background-color: pink;
+  }
+  &-yellow {
+    background-color: yellow;
+  }
+  &-brown {
+    background-color: brown;
+  }
+  &.disabled {
+    pointer-events: none;
+  }
+}
