@@ -1,20 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TilesGrid from "../tilesGrid";
 import "./app.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { startGame, newGame } from "../../redux/actions";
 
 export default function App() {
-  const colors = useSelector((state) => state.colors);
-  const [win, setWin] = useState(false)
-  useEffect(() => {
-    setWin(colors.every((e) => e.status === true))
-  }, [colors]);
+  const dispatch = useDispatch();
+  const start = useSelector((state) => state.startGame);
+  const win = useSelector((state) => state.isWin);
 
   return (
     <div className="tiles">
       <h2>Tiles game</h2>
 
-      <TilesGrid />
+      {start ? (
+        <TilesGrid />
+      ) : (
+        <button
+          className="tiles__start"
+          onClick={() => dispatch(startGame(true))}
+        >
+          Start Game
+        </button>
+      )}
 
       {win && (
         <div className="tiles__win">
@@ -23,6 +31,10 @@ export default function App() {
             <br />
             you win!
           </h3>
+
+          <h4>
+            New game? <button onClick={() => dispatch(newGame())}>start</button>
+          </h4>
         </div>
       )}
     </div>

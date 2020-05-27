@@ -2,55 +2,38 @@ import React, { useEffect, useState } from "react";
 import TileElement from "../tileElement";
 import "./tilesGrid.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { setColorStatus, closeColors } from "../../redux/actions";
+import { setColorStatus, closeColors, isWin } from "../../redux/actions";
 
 export default function TilesGrid() {
   const dispatch = useDispatch();
   const colors = useSelector((state) => state.colors);
-  const [color1, setColor1] = useState({});
-  const [color2, setColor2] = useState({});
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [chosenColor, setChosenColor] = useState([]);
+  const colorsForComparison = 2;
 
   useEffect(() => {
-    if (Object.entries(color1).length && Object.entries(color2).length) {
-      if (color1.color === color2.color) {
-        setColor1({});
-        setColor2({});
-        setTimeout(() => {
-          setIsDisabled(!isDisabled);
-        }, 500);
+    if (chosenColor.length === colorsForComparison) {
+      if (chosenColor[0].color === chosenColor[1].color) {
+        setChosenColor([]);
       } else {
-        setColor1({});
-        setColor2({});
+        setChosenColor([]);
         setTimeout(() => {
-          dispatch(closeColors([color1, color2]));
-          setIsDisabled(!isDisabled);
+          dispatch(closeColors(chosenColor));
         }, 500);
       }
     }
-    colors.every((e) => e.status === true)
-  }, [dispatch, colors, color1, color2, isDisabled]);
+    if(colors.every((e) => e.status === true)) {
+      dispatch(isWin(true))
+    }
+  }, [dispatch, colors, chosenColor]);
 
-  const getChosenColor = ({ id, status, open, color }) => {
-    if (color1.id === id) {
-      setColor1({});
+  const getChosenColor = ({ id, status, color }) => {
+    if (chosenColor.length === colorsForComparison) {
+      setChosenColor([]);
     } else {
-      if (!Object.entries(color1).length) {
-        if (color2.id === id) {
-          setColor2({});
-        } else {
-          setColor1({ id, color });
-        }
-      } else {
-        if (color2.id === id) {
-          setColor2({});
-        } else {
-          setColor2({ id, color });
-          setIsDisabled(!isDisabled);
-        }
-      }
+      setChosenColor([...chosenColor, { id, color }]);
     }
-    dispatch(setColorStatus(id, status, open));
+
+    dispatch(setColorStatus(id, status));
   };
   return (
     <div className="tiles__grid">
@@ -59,7 +42,6 @@ export default function TilesGrid() {
           <TileElement
             colorData={color}
             key={color.id}
-            isDisabled={isDisabled}
             getChosenColor={getChosenColor}
           />
         );

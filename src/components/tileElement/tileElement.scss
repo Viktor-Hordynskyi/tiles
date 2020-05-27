@@ -6,6 +6,10 @@
   transition: .3s;
   height: 10rem;
   width: 10rem;
+  &>div {
+    height: 100%;
+    width: 100%;
+  }
 
   &.hide {
     background-color: #555;
@@ -34,7 +38,8 @@
   &-brown {
     background-color: brown;
   }
-  &.disabled {
+  &.disabled>div {
+    cursor: pointer;
     pointer-events: none;
   }
 }
